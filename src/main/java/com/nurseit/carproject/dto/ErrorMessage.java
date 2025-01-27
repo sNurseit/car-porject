@@ -3,6 +3,7 @@ package com.nurseit.carproject.dto;
 import lombok.*;
 
 import java.util.Date;
+import java.util.List;
 
 @Setter
 @Getter
@@ -11,6 +12,6 @@ import java.util.Date;
 public class ErrorMessage {
     private int statusCode;
     private Date timestamp;
-    private String message;
+    private Object message;
     private String description;
 }
