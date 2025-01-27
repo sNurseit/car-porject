@@ -1,8 +1,11 @@
 package com.nurseit.carproject.service;
 
+import com.nurseit.carproject.dto.CarFilterDto;
 import com.nurseit.carproject.entity.Car;
 import com.nurseit.carproject.exceptions.CarNotFoundException;
+import org.springframework.data.domain.Page;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -52,4 +55,7 @@ public interface CarService {
      * @return the saved {@link Car} object.
      */
     Car save(Car car);
+
+
+    Page<Car> filter(CarFilterDto filter);
 }

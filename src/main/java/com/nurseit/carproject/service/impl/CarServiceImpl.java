@@ -1,13 +1,19 @@
 package com.nurseit.carproject.service.impl;
 
+import com.nurseit.carproject.dto.CarFilterDto;
 import com.nurseit.carproject.entity.Car;
 import com.nurseit.carproject.exceptions.CarNotFoundException;
 import com.nurseit.carproject.repository.CarRepository;
 import com.nurseit.carproject.service.CarService;
+import com.nurseit.carproject.specification.CarSpecification;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -46,4 +52,16 @@ public class CarServiceImpl implements CarService {
     public Car save(Car car) {
         return carRepository.save(car);
     }
+
+    @Override
+    public Page<Car> filter(CarFilterDto filter) {
+        var specification = new CarSpecification(filter);
+        int page = Optional.ofNullable(filter.getPage()).orElse(0);
+        int size = Optional.ofNullable(filter.getSize()).orElse(10);
+
+        return carRepository.findAll(
+                specification,
+                PageRequest.of(page, size));
+    }
+
 }
