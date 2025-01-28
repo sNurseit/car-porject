@@ -1,8 +1,11 @@
 package com.nurseit.carproject.controller;
 
+import com.nurseit.carproject.dto.CarDto;
 import com.nurseit.carproject.dto.CarFilterDto;
 import com.nurseit.carproject.entity.Car;
 import com.nurseit.carproject.service.CarService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -11,16 +14,16 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("cars")
 @Validated
+@Tag(name = "Integration", description = "Operations related to exchange rate integration")
 public class CarController {
     private final CarService carService;
-
+    @Operation(summary = "Returns a Hello World message")
     @GetMapping
     public ResponseEntity<?> findAll() {
         return ResponseEntity.ok(carService.findAll());
@@ -56,12 +59,12 @@ public class CarController {
     }
 
     @PostMapping
-    public ResponseEntity<?> save(@RequestBody @Validated Car car) {
+    public ResponseEntity<?> save(@RequestBody @Validated CarDto car) {
         return ResponseEntity.ok(carService.save(car));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable UUID id, @RequestBody @Validated Car car) {
+    public ResponseEntity<?> update(@PathVariable UUID id, @RequestBody @Validated CarDto car) {
         return ResponseEntity.ok(carService.update(id, car));
     }
 

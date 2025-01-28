@@ -1,8 +1,10 @@
 package com.nurseit.carproject.service.impl;
 
+import com.nurseit.carproject.dto.CarDto;
 import com.nurseit.carproject.dto.CarFilterDto;
 import com.nurseit.carproject.entity.Car;
 import com.nurseit.carproject.exceptions.CarNotFoundException;
+import com.nurseit.carproject.mapper.CarMapper;
 import com.nurseit.carproject.repository.CarRepository;
 import com.nurseit.carproject.service.CarService;
 import com.nurseit.carproject.specification.CarSpecification;
@@ -20,6 +22,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class CarServiceImpl implements CarService {
     private final CarRepository carRepository;
+    private final CarMapper carMapper;
 
     @Override
     public List<Car> findAll() {
@@ -32,7 +35,7 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public Car update(UUID id, Car carToSave) {
+    public Car update(UUID id, CarDto carToSave) {
         Car car = carRepository.findById(id).orElseThrow(() -> new CarNotFoundException(id));
 
         car.setYear(carToSave.getYear());
@@ -40,6 +43,7 @@ public class CarServiceImpl implements CarService {
         car.setMake(carToSave.getMake());
         car.setModel(carToSave.getModel());
         car.setPrice(carToSave.getPrice());
+
         return carRepository.save(car);
     }
 
@@ -49,8 +53,8 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public Car save(Car car) {
-        return carRepository.save(car);
+    public Car save(CarDto dto) {
+        return carRepository.save(carMapper.toEntity(dto));
     }
 
     @Override

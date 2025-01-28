@@ -1,5 +1,6 @@
 package com.nurseit.carproject.service;
 
+import com.nurseit.carproject.dto.CarDto;
 import com.nurseit.carproject.dto.CarFilterDto;
 import com.nurseit.carproject.entity.Car;
 import com.nurseit.carproject.exceptions.CarNotFoundException;
@@ -35,11 +36,11 @@ public interface CarService {
      * Updates the details of an existing car.
      *
      * @param id the unique identifier of the car to be updated.
-     * @param car the {@link Car} object containing updated details.
+     * @param car the {@link CarDto} object containing updated details.
      * @return the updated {@link Car} object.
      * @throws CarNotFoundException if no car is found with the given ID.
      */
-    Car update(UUID id, Car car);
+    Car update(UUID id, CarDto car);
 
     /**
      * Deletes a car by its unique identifier.
@@ -51,10 +52,10 @@ public interface CarService {
     /**
      * Saves a new car to the database.
      *
-     * @param car the {@link Car} object to be saved.
+     * @param car the {@link CarDto} object to be saved.
      * @return the saved {@link Car} object.
      */
-    Car save(Car car);
+    Car save(CarDto car);
 
 
     Page<Car> filter(CarFilterDto filter);
