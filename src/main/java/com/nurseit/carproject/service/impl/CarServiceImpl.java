@@ -49,6 +49,7 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public void deleteById(UUID id) {
+        carRepository.findById(id).orElseThrow(() -> new CarNotFoundException(id));
         carRepository.deleteById(id);
     }
 
