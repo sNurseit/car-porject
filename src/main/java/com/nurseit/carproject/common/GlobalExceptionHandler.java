@@ -1,7 +1,9 @@
 package com.nurseit.carproject.common;
 
 import com.nurseit.carproject.dto.ErrorMessage;
+import com.nurseit.carproject.exceptions.AuthException;
 import com.nurseit.carproject.exceptions.NotFoundInDatabaseException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -13,7 +15,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@ControllerAdvice()
+@ControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -29,6 +32,8 @@ public class GlobalExceptionHandler {
                 new Date(),
                 errors,
                 request.getDescription(false));
+        log.info("Validation error: {} - {}", errors, request.getDescription(false));
+
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
 
@@ -40,6 +45,19 @@ public class GlobalExceptionHandler {
                 new Date(),
                 ex.getMessage(),
                 request.getDescription(false));
+        log.info("Not found in database: {} - {}", ex.getMessage(), request.getDescription(false));
+        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(AuthException.class)
+    protected ResponseEntity<Object> handleAuthException(
+            AuthException ex, WebRequest request) {
+        ErrorMessage message = new ErrorMessage(
+                HttpStatus.BAD_REQUEST.value(),
+                new Date(),
+                ex.getMessage(),
+                request.getDescription(false));
+        log.info("Auth exception: {} - {}", ex.getMessage(), request.getDescription(false));
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
 
@@ -51,6 +69,7 @@ public class GlobalExceptionHandler {
                 new Date(),
                 ex.getMessage(),
                 request.getDescription(false));
+        log.error("Unexpected error occurred: {} - {}", ex.getMessage(), request.getDescription(false), ex);
         return  new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
