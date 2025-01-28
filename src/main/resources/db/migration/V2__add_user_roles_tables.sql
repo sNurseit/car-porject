@@ -1,7 +1,7 @@
 
 CREATE TABLE users (
                        id BIGSERIAL PRIMARY KEY,
-                       username TEXT UNIQUE,
+                       username TEXT UNIQUE NOT NULL,
                        password TEXT NOT NULL,
                        enable BOOLEAN NOT NULL
 );
